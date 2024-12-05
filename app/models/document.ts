@@ -2,8 +2,11 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
 import Module from './module.js'
 import type { HasOne } from '@adonisjs/lucid/types/relations'
+import { AclModelInterface, ModelIdType } from '@holoyan/adonisjs-permissions/types'
+// import { MorphMap } from '@holoyan/adonisjs-permissions'
 
-export default class Document extends BaseModel {
+// @MorphMap('documents')
+export default class Document extends BaseModel implements AclModelInterface {
   @column({ isPrimary: true })
   declare id: number
 
@@ -21,4 +24,8 @@ export default class Document extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  getModelId(): ModelIdType {
+    return this.id
+  }
 }
